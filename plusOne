@@ -1,0 +1,51 @@
+//66. plus one
+
+class Solution {
+    public int[] plusOne(int[] digits) {
+        for (int i = digits.length - 1; i > -1; i--) {
+            if (digits[i] < 9) {
+                digits[i]++;
+                return digits;
+            }
+
+            digits[i] = 0;
+        }
+    
+        // 只有全部的位數都是 9 的情況才會跑完迴圈，故只要將第一位變成 1 就好
+        int[] result = new int [digits.length + 1];
+        result[0] = 1;
+
+        return result;
+    }
+}
+
+//21 mergeTwoSortedLists
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    if (l1 == null) {
+        return l2;
+    }
+    if (l2 == null) {
+        return l1;
+    }
+
+    ListNode result = new ListNode(0);
+    ListNode cur = result;
+    while (l1 != null && l2 != null) {
+        if (l1.val < l2.val) {
+            cur.next = l1;
+            l1 = l1.next;
+        } else {
+            cur.next = l2;
+            l2 = l2.next;
+        }
+        cur = cur.next;
+    }
+    if (l1 != null) {
+        cur.next = l1;
+    }
+    if (l2 != null) {
+        cur.next = l2;
+    }
+
+    return result.next;
+}   
