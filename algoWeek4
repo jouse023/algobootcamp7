@@ -1,0 +1,54 @@
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        Deque<Integer> dq = new LinkedList<Integer>();
+        int[] res = new int[n - k + 1];
+        for (int i = 0; i < n; i++){
+            // 由於我們需要找到滑動視窗內的最大值，我們可以採取這樣的方法：
+            // 我們讓佇列頭部放最大值的索引（用索引是因為後面需要判斷是否要刪除已經越界的元素），佇列的尾部存較小且靠後的元素
+            while (!dq.isEmpty() && nums[dq.getLast()] <= nums[i]){
+                dq.pollLast();
+            }
+            dq.offerLast(i);
+
+            /**此時這次的視窗滑動已經結束了，我們要考慮是否有上一次的老元素越界的情況，因為是按順序儲存的，第一個元素一定是最靠前的元素；
+            因此只有可能該元素越界，我們判斷該元素的索引是否等於i - k，等於說明越界，直接刪除*/
+            if (dq.peekFirst() == i - k){
+                dq.pollFirst();
+            }
+            // 到這一步我們需要獲取視窗內的最大值了，由於不滿三個元素時，不需要求最大值，從遍歷到第k個元素開始才需要求最大值
+            if (i >= k - 1){
+                // 由於最大的會一直往前挪，佇列頭部的元素此時一定是視窗內的元素，直接存入res中即可
+                res[i - k + 1] = nums[dq.peekFirst()];
+            }
+        }
+        return res;
+    }
+}
+
+
+
+
+public int minEatingSpeed(int[] piles, int H) {
+    int l = 1, r = 0;
+    for(int p : piles){
+        r = Math.max(r, p);
+    }
+    while(l < r){
+        int mid = (l + r) >> 1;
+        int t = 0;
+        for(int p : piles){
+            t += (p / mid ) + (p % mid == 0 ? 0 : 1);
+            if(t > H){
+                break;
+            }
+        }
+        if(t > H){
+            l = mid + 1;
+        }else{
+            r = mid;
+        }
+    }
+    return l;
+}
+
