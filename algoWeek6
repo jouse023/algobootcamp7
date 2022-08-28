@@ -1,0 +1,40 @@
+/**
+*70. Climbing Stairs
+*
+*
+*/
+
+public static int climbStairs(int n) {
+	//儲存單元只需兩個，ways[0]表示n-2階的走法，ways[1]表示n-1階走法數
+        int[] ways = {1, 1};  
+        for (int i = 1; i < n; i++) {  
+            int temp = ways[1]; 
+            //狀態轉移方程的體現 step[i] = steps[i-2]+steps[i-1];
+            //ways[1] = ways[0]+ways[1];
+            ways[1] += ways[0]; 
+            ways[0] = temp;  
+        }  
+        return ways[1];      
+    }
+    
+    
+/**
+*120. Triangle
+*
+*
+*/
+public class Triangle {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int size = triangle.size();
+        int[] dp = new int[size];
+        for(int i = 0; i < size; i++){
+            dp[i] = triangle.get(size - 1).get(i);
+        }
+        for(int i = size - 1; i >= 0; i--) {
+            for(int j = 0; j < i; j++) {
+                dp[j] = triangle.get(i - 1).get(j) + Math.min(dp[j], dp[j + 1]);
+            }
+        }
+        return dp[0];
+    }
+}
